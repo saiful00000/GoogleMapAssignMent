@@ -501,7 +501,7 @@ public class MapsActivity extends FragmentActivity
 
             // draw a plyline from my location to destination
             //drawPolyLine();
-            //showTheDirection();
+            showTheDirection();
 
             Log.i(TAG, "Lat : " + place.getLatLng().latitude + " Long : " + place.getLatLng().longitude);
         } else {
@@ -509,19 +509,8 @@ public class MapsActivity extends FragmentActivity
         }
     }
 
-    private void drawPolyLine() {
-        Polyline line = map.addPolyline(new PolylineOptions()
-                .add(new LatLng(currentLatitude, currentLongitude), new LatLng(searchedLatitude, searchedLongitude))
-                .width(5)
-                .color(Color.RED));
-
-        List<PatternItem> pattern = Arrays.asList(
-                new Dot(), new Gap(20), new Dash(30), new Gap(20));
-        line.setPattern(pattern);
-        line.setJointType(JointType.ROUND);
-    }
-
     private void showTheDirection() {
+        map.clear();
         //Define list to get all latlng for the route
         List<LatLng> path = new ArrayList();
 
@@ -530,6 +519,7 @@ public class MapsActivity extends FragmentActivity
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyBxxVKYOZOuGnDWYueM-p9QGjsRTzlcqYM")
                 .build();
+
         DirectionsApiRequest req = DirectionsApi.getDirections(context, currentLatitude+","+currentLongitude, searchedLatitude+","+searchedLongitude);
         try {
             DirectionsResult res = req.await();
@@ -584,5 +574,5 @@ public class MapsActivity extends FragmentActivity
         map.getUiSettings().setZoomControlsEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(searchedLatitude, searchedLongitude), 6));
     }
-    
+
 }
